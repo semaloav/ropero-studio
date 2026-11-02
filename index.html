@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#18332d">
+  <title>Ropero Studio — Presentador de modelos</title>
+  <meta name="description" content="Configura un ropero y presenta una propuesta visual clara a tus clientes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="review.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Inicio Ropero Studio"><span class="brand-mark">R</span><span>Ropero <b>Studio</b></span></a>
+    <div class="top-actions">
+      <span class="saved-state" id="savedState" role="status" aria-live="polite">Guardado en este dispositivo</span>
+      <button class="button button-secondary" id="newBtn">Nuevo</button>
+      <button class="button button-primary" id="printBtn">Presentar / PDF</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div>
+        <span class="eyebrow">Diseñador de propuestas</span>
+        <h1>De una medida a una<br><em>propuesta memorable.</em></h1>
+      </div>
+      <p>Configura el ropero, visualiza su distribución y entrega una ficha clara y profesional a tu cliente.</p>
+    </section>
+
+    <section class="workspace">
+      <form class="panel configurator" id="configForm">
+        <div class="panel-heading"><span>01</span><div><h2>Configura el modelo</h2><p>Completa los datos del proyecto</p></div></div>
+
+        <label for="project">Nombre del proyecto<input id="project" value="Ropero Principal — Familia Ríos" maxlength="60" required></label>
+        <label for="client">Cliente<input id="client" value="María Ríos" maxlength="60" required></label>
+
+        <div class="field-group">
+          <h3>Dimensiones <small>cm</small></h3>
+          <div class="triple">
+            <label for="width">Ancho<input id="width" type="number" min="80" max="500" value="240" inputmode="decimal" required></label>
+            <label for="height">Alto<input id="height" type="number" min="120" max="320" value="220" inputmode="decimal" required></label>
+            <label for="depth">Fondo<input id="depth" type="number" min="35" max="100" value="60" inputmode="decimal" required></label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <h3>Distribución</h3>
+          <div class="double">
+            <label for="doors">Puertas<select id="doors"><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option></select></label>
+            <label for="drawers">Cajones<select id="drawers"><option>0</option><option>2</option><option selected>3</option><option>4</option><option>6</option></select></label>
+          </div>
+          <label for="layout">Organización interior<select id="layout"><option value="balanced" selected>Mixta — repisas y colgador</option><option value="hanging">Colgador amplio</option><option value="shelves">Mayormente repisas</option></select></label>
+        </div>
+
+        <div class="field-group">
+          <h3>Acabado</h3>
+          <div class="swatches" role="radiogroup" aria-label="Acabado del ropero">
+            <button type="button" class="swatch active" role="radio" aria-checked="true" data-color="#c69a68" data-name="Roble natural" style="--swatch:#c69a68" aria-label="Roble natural"></button>
+            <button type="button" class="swatch" role="radio" aria-checked="false" data-color="#efe9df" data-name="Lino claro" style="--swatch:#efe9df" aria-label="Lino claro"></button>
+            <button type="button" class="swatch" role="radio" aria-checked="false" data-color="#6e4935" data-name="Nogal" style="--swatch:#6e4935" aria-label="Nogal"></button>
+            <button type="button" class="swatch" role="radio" aria-checked="false" data-color="#29423b" data-name="Verde bosque" style="--swatch:#29423b" aria-label="Verde bosque"></button>
+            <button type="button" class="swatch" role="radio" aria-checked="false" data-color="#303436" data-name="Grafito" style="--swatch:#303436" aria-label="Grafito"></button>
+          </div>
+          <p class="finish-name" id="finishName">Roble natural</p>
+        </div>
+        <label for="notes">Notas para el cliente<textarea id="notes" rows="3" maxlength="240" placeholder="Ej.: Interior en melamina blanca, tiradores negros…">Interior en melamina beige y tiradores tipo gola.</textarea></label>
+      </form>
+
+      <section class="preview-column">
+        <article class="panel preview-card">
+          <div class="preview-head">
+            <div><span class="eyebrow">Vista referencial</span><h2 id="projectPreview">Ropero Principal — Familia Ríos</h2></div>
+            <div class="preview-actions"><button class="view-toggle active" id="closedViewBtn" type="button" aria-pressed="true">Exterior</button><button class="view-toggle" id="openViewBtn" type="button" aria-pressed="false">Interior</button></div>
+          </div>
+          <div class="stage">
+            <div class="dimension dimension-width"><span id="widthLabel">240 cm</span></div>
+            <div class="dimension dimension-height"><span id="heightLabel">220 cm</span></div>
+            <div class="wardrobe-wrap">
+              <div class="wardrobe" id="wardrobe" aria-label="Representación referencial del ropero" role="img">
+                <div class="top-shadow"></div>
+                <div class="interior" id="interior"></div>
+                <div class="doors" id="doorsView"></div>
+                <div class="base"></div>
+              </div>
+              <div class="floor-shadow"></div>
+            </div>
+          </div>
+          <p class="reference-note">Representación visual referencial. Los tonos y proporciones pueden variar en el producto final.</p>
+        </article>
+
+        <div class="summary-grid">
+          <article class="panel summary"><span class="summary-icon">↔</span><div><small>MEDIDAS GENERALES</small><strong id="measureSummary">240 × 220 × 60 cm</strong></div></article>
+          <article class="panel summary"><span class="summary-icon">▥</span><div><small>DISTRIBUCIÓN</small><strong id="distributionSummary">3 puertas · 3 cajones</strong></div></article>
+          <article class="panel summary"><span class="summary-icon color-dot" id="colorDot"></span><div><small>ACABADO</small><strong id="finishSummary">Roble natural</strong></div></article>
+        </div>
+
+        <article class="panel client-sheet">
+          <div><small>PROPUESTA PARA</small><h3 id="clientPreview">María Ríos</h3><p id="notesPreview">Interior en melamina beige y tiradores tipo gola.</p></div>
+          <div class="date"><small>FECHA</small><strong id="datePreview"></strong></div>
+        </article>
+      </section>
+    </section>
+  </main>
+  <footer><span>Ropero Studio</span><p>Propuestas claras. Decisiones más simples.</p></footer>
+  <script src="app.js"></script>
+</body>
+</html>
