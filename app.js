@@ -218,7 +218,12 @@ function cutlistRows(pieces, grouped) {
     }
     const row = element("tr");
     const values = [piece.code, piece.name, currentGroup, piece.quantity, `${piece.length} mm`, `${piece.width} mm`, `${piece.thickness} mm`, piece.material, piece.grain, piece.edging.join(", ") || "—", piece.note];
-    values.forEach((value) => row.append(element("td", "", value)));
+    const labels = ["Código", "Pieza", "Módulo", "Cantidad", "Largo", "Ancho", "Espesor", "Material", "Veta", "Canteado", "Observación"];
+    values.forEach((value, index) => {
+      const cell = element("td", "", value);
+      cell.dataset.label = labels[index];
+      row.append(cell);
+    });
     rows.push(row);
   });
   return rows;
