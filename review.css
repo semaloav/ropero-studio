@@ -21,6 +21,32 @@
   box-shadow: 0 2px 7px #18332d18;
 }
 
+.view-3d-button { color: var(--accent); }
+.view-3d-button span { font-size: 14px; vertical-align: -1px; margin-right: 2px; }
+
+.wardrobe-wrap { perspective: 1000px; }
+.wardrobe { transform-style: preserve-3d; transform-origin: center bottom; }
+.side-panel {
+  position: absolute;
+  display: none;
+  top: -7px;
+  bottom: -7px;
+  right: -42px;
+  width: 42px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--wood), #2a1a10 18%), color-mix(in srgb, var(--wood), #000 34%));
+  border: 1px solid color-mix(in srgb, var(--wood), #1c110a 35%);
+  transform: rotateY(90deg);
+  transform-origin: left center;
+}
+
+.wardrobe.three-d-view {
+  transform: rotateY(-18deg) rotateX(1.5deg) translateX(-2%);
+  box-shadow: 24px 19px 34px rgba(42,35,27,.27);
+}
+.wardrobe.three-d-view .side-panel { display: block; }
+.wardrobe.three-d-view .top-shadow { transform: skewX(-25deg) translateZ(1px); }
+.wardrobe.three-d-view + .floor-shadow { transform: translateX(5%) skewX(-14deg); }
+
 .doors { transition: opacity .2s ease; }
 .wardrobe.interior-view .doors { opacity: 0; pointer-events: none; }
 
@@ -33,7 +59,9 @@
 
 @media (max-width: 520px) {
   .preview-head { gap: 10px; }
-  .preview-actions { flex-shrink: 0; }
+  .preview-actions { flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+  .view-toggle { padding: 6px 7px; }
+  .wardrobe.three-d-view { transform: rotateY(-15deg) rotateX(1deg) translateX(-3%); }
 }
 
 @media print {
