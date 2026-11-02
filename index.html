@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
   <header class="app-header">
@@ -106,6 +106,12 @@
               <div class="depth-model" id="depthModel"><div class="depth-top"></div><div class="depth-side"></div></div>
             </div>
             <div class="module-measures" id="moduleMeasures"></div>
+            <div class="model-rotation-controls" id="modelRotationControls" hidden aria-label="Controles de la vista 3D">
+              <button type="button" id="rotateLeftBtn" aria-label="Girar a la izquierda">↶</button>
+              <button type="button" id="resetRotationBtn">Centrar</button>
+              <button type="button" id="rotateRightBtn" aria-label="Girar a la derecha">↷</button>
+            </div>
+            <span class="rotation-hint" id="rotationHint" hidden>Arrastra suavemente para girar</span>
           </div>
           <div class="proposal-summary"><div><small>MEDIDAS</small><strong id="summaryDimensions"></strong></div><div><small>CONFIGURACIÓN</small><strong id="summaryConfiguration"></strong></div><div><small>ACABADOS</small><strong id="summaryFinishes"></strong></div></div>
           <div class="door-formula" id="doorFormula"></div>
@@ -133,7 +139,7 @@
 
   <div class="client-mode-banner" id="clientModeBanner" hidden><span>Modo presentación al cliente</span><button class="button primary" id="printClientBtn" type="button">Imprimir propuesta</button><button class="button secondary" id="exitClientModeBtn" type="button">Volver al taller</button></div>
   <template id="moduleTemplate"><article class="module-card"><header><div><span class="module-index"></span><input class="module-name" maxlength="30" aria-label="Nombre del módulo"></div><button class="icon-button remove-module" type="button" aria-label="Eliminar módulo">×</button></header><div class="module-fields"><label>Ancho <span>mm</span><input class="module-width" type="number" min="100" step="1"><span class="field-error module-width-error"></span></label><label>Tipo<select class="module-type"></select></label><label>Repisas<input class="module-shelves" type="number" min="0" max="10"></label><label>Cajones visibles<input class="module-drawers" type="number" min="0" max="6"></label></div><p class="module-hint"></p></article></template>
-  <script type="module" src="app.js?v=3"></script>
+  <script type="module" src="app.js?v=4"></script>
 </body>
 </html>
 

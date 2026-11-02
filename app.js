@@ -16,6 +16,8 @@ let state = loadState();
 let activeStep = "project";
 let activeView = "exterior";
 let clientMode = false;
+let modelRotation = { yaw: -22, pitch: 2 };
+let dragState = null;
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -181,6 +183,10 @@ function renderModel() {
   const modelWidth = Math.min(maxWidth, Math.max(220, 450 * ratio));
   byId("modelFrame").style.width = `${modelWidth}px`;
   byId("modelFrame").className = `model-frame mode-${activeView}`;
+  byId("modelFrame").style.setProperty("--model-yaw", `${modelRotation.yaw}deg`);
+  byId("modelFrame").style.setProperty("--model-pitch", `${modelRotation.pitch}deg`);
+  byId("modelRotationControls").hidden = activeView !== "threeD";
+  byId("rotationHint").hidden = activeView !== "threeD";
   document.documentElement.style.setProperty("--exterior", FINISHES[state.finishes.exterior].color);
   document.documentElement.style.setProperty("--exterior-dark", FINISHES[state.finishes.exterior].dark);
   document.documentElement.style.setProperty("--interior", FINISHES[state.finishes.interior].color);
@@ -306,6 +312,48 @@ function toggleClientMode(enabled) {
   if (enabled) showStep("presentation");
 }
 
+function clampRotation(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function applyModelRotation() {
+  const frame = byId("modelFrame");
+  frame.style.setProperty("--model-yaw", `${modelRotation.yaw}deg`);
+  frame.style.setProperty("--model-pitch", `${modelRotation.pitch}deg`);
+}
+
+function rotateModel(delta) {
+  modelRotation.yaw = clampRotation(modelRotation.yaw + delta, -34, -10);
+  applyModelRotation();
+}
+
+function bindModelRotation() {
+  const stage = byId("visualStage");
+  stage.addEventListener("pointerdown", (event) => {
+    if (activeView !== "threeD" || event.target.closest("button")) return;
+    dragState = { x: event.clientX, y: event.clientY, yaw: modelRotation.yaw, pitch: modelRotation.pitch };
+    stage.setPointerCapture(event.pointerId);
+    stage.classList.add("is-rotating");
+  });
+  stage.addEventListener("pointermove", (event) => {
+    if (!dragState || activeView !== "threeD") return;
+    modelRotation.yaw = clampRotation(dragState.yaw + ((event.clientX - dragState.x) * 0.08), -34, -10);
+    modelRotation.pitch = clampRotation(dragState.pitch - ((event.clientY - dragState.y) * 0.05), -4, 7);
+    applyModelRotation();
+  });
+  const stopDragging = (event) => {
+    if (!dragState) return;
+    dragState = null;
+    stage.classList.remove("is-rotating");
+    if (stage.hasPointerCapture(event.pointerId)) stage.releasePointerCapture(event.pointerId);
+  };
+  stage.addEventListener("pointerup", stopDragging);
+  stage.addEventListener("pointercancel", stopDragging);
+  byId("rotateLeftBtn").addEventListener("click", () => rotateModel(-4));
+  byId("rotateRightBtn").addEventListener("click", () => rotateModel(4));
+  byId("resetRotationBtn").addEventListener("click", () => { modelRotation = { yaw: -22, pitch: 2 }; applyModelRotation(); });
+}
+
 function bindEvents() {
   document.addEventListener("click", (event) => {
     const step = event.target.closest("[data-step]");
@@ -346,6 +394,7 @@ function bindEvents() {
 
 populateSelects();
 bindEvents();
+bindModelRotation();
 render();
 showStep(activeStep);
 
