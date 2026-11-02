@@ -1,0 +1,41 @@
+.preview-actions {
+  display: flex;
+  padding: 3px;
+  background: #edf0ec;
+  border-radius: 9px;
+}
+
+.view-toggle {
+  border: 0;
+  background: transparent;
+  color: #68756f;
+  padding: 7px 10px;
+  border-radius: 7px;
+  font: 700 10px "DM Sans", sans-serif;
+  cursor: pointer;
+}
+
+.view-toggle.active {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 2px 7px #18332d18;
+}
+
+.doors { transition: opacity .2s ease; }
+.wardrobe.interior-view .doors { opacity: 0; pointer-events: none; }
+
+.swatch:focus-visible,
+.button:focus-visible,
+.view-toggle:focus-visible {
+  outline: 3px solid #d5784070;
+  outline-offset: 2px;
+}
+
+@media (max-width: 520px) {
+  .preview-head { gap: 10px; }
+  .preview-actions { flex-shrink: 0; }
+}
+
+@media print {
+  .preview-actions { display: none !important; }
+}
