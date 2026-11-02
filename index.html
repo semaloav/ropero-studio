@@ -74,7 +74,7 @@
         <article class="panel preview-card">
           <div class="preview-head">
             <div><span class="eyebrow">Vista referencial</span><h2 id="projectPreview">Ropero Principal — Familia Ríos</h2></div>
-            <div class="preview-actions"><button class="view-toggle active" id="closedViewBtn" type="button" aria-pressed="true">Exterior</button><button class="view-toggle" id="openViewBtn" type="button" aria-pressed="false">Interior</button></div>
+            <div class="preview-actions" aria-label="Tipo de vista"><button class="view-toggle active" id="closedViewBtn" type="button" aria-pressed="true">Exterior</button><button class="view-toggle" id="openViewBtn" type="button" aria-pressed="false">Interior</button><button class="view-toggle view-3d-button" id="threeDViewBtn" type="button" aria-pressed="false"><span aria-hidden="true">◇</span> Vista 3D</button></div>
           </div>
           <div class="stage">
             <div class="dimension dimension-width"><span id="widthLabel">240 cm</span></div>
@@ -82,6 +82,7 @@
             <div class="wardrobe-wrap">
               <div class="wardrobe" id="wardrobe" aria-label="Representación referencial del ropero" role="img">
                 <div class="top-shadow"></div>
+                <div class="side-panel" aria-hidden="true"></div>
                 <div class="interior" id="interior"></div>
                 <div class="doors" id="doorsView"></div>
                 <div class="base"></div>
