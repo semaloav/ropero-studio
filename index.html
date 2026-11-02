@@ -3,110 +3,137 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#18332d">
-  <title>Ropero Studio — Presentador de modelos</title>
-  <meta name="description" content="Configura un ropero y presenta una propuesta visual clara a tus clientes.">
+  <meta name="theme-color" content="#20352f">
+  <title>Ropero Studio — Diseña, presenta y revisa</title>
+  <meta name="description" content="Configura un ropero por módulos, presenta la propuesta y genera un despiece preliminar coherente.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="review.css">
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="Inicio Ropero Studio"><span class="brand-mark">R</span><span>Ropero <b>Studio</b></span></a>
-    <div class="top-actions">
-      <span class="saved-state" id="savedState" role="status" aria-live="polite">Guardado en este dispositivo</span>
-      <button class="button button-secondary" id="newBtn">Nuevo</button>
-      <button class="button button-primary" id="printBtn">Presentar / PDF</button>
+  <header class="app-header">
+    <a class="brand" href="#" aria-label="Ropero Studio, inicio"><span class="brand-mark">RS</span><span>Ropero <b>Studio</b></span></a>
+    <div class="header-state">
+      <span class="save-state" id="saveState" role="status">Guardado localmente</span>
+      <span class="status-badge" id="statusBadge">En configuración</span>
+    </div>
+    <div class="header-actions">
+      <button class="button ghost" id="newProjectBtn" type="button">Nuevo</button>
+      <button class="button secondary" id="clientModeBtn" type="button">Presentar al cliente</button>
+      <button class="button primary" id="printBtn" type="button">Imprimir / PDF</button>
     </div>
   </header>
 
-  <main>
-    <section class="intro">
-      <div>
-        <span class="eyebrow">Diseñador de propuestas</span>
-        <h1>De una medida a una<br><em>propuesta memorable.</em></h1>
+  <nav class="mobile-steps" id="mobileSteps" aria-label="Etapas del proyecto"></nav>
+
+  <main class="app-shell">
+    <aside class="step-sidebar" aria-label="Etapas del proyecto">
+      <div class="sidebar-intro"><span class="kicker">Flujo de trabajo</span><h1>Del diseño al despiece.</h1><p>Una configuración, tres vistas y un despiece conectado.</p></div>
+      <ol class="step-list" id="desktopSteps"></ol>
+      <div class="validity-card" id="validityCard">
+        <span class="validity-dot"></span>
+        <div><strong id="validityTitle">Configuración válida</strong><p id="validityText">Lista para presentar.</p></div>
       </div>
-      <p>Configura el ropero, visualiza su distribución y entrega una ficha clara y profesional a tu cliente.</p>
-    </section>
+    </aside>
 
-    <section class="workspace">
-      <form class="panel configurator" id="configForm">
-        <div class="panel-heading"><span>01</span><div><h2>Configura el modelo</h2><p>Completa los datos del proyecto</p></div></div>
-
-        <label for="project">Nombre del proyecto<input id="project" value="Ropero Principal — Familia Ríos" maxlength="60" required></label>
-        <label for="client">Cliente<input id="client" value="María Ríos" maxlength="60" required></label>
-
-        <div class="field-group">
-          <h3>Dimensiones <small>cm</small></h3>
-          <div class="triple">
-            <label for="width">Ancho<input id="width" type="number" min="80" max="500" value="240" inputmode="decimal" required></label>
-            <label for="height">Alto<input id="height" type="number" min="120" max="320" value="220" inputmode="decimal" required></label>
-            <label for="depth">Fondo<input id="depth" type="number" min="35" max="100" value="60" inputmode="decimal" required></label>
+    <section class="work-area">
+      <section class="step-panel active" data-step-panel="project" aria-labelledby="projectTitle">
+        <header class="section-heading"><div><span class="step-number">01</span><span class="kicker">Datos iniciales</span><h2 id="projectTitle">Proyecto y cliente</h2></div><p>Identifica la propuesta y define cómo se verá frente al cliente.</p></header>
+        <div class="form-card">
+          <div class="form-grid two">
+            <label>Nombre del proyecto<input id="projectName" data-path="project.name" maxlength="70" required><span class="field-error" data-error-for="project.name"></span></label>
+            <label>Cliente<input id="clientName" data-path="project.client" maxlength="70" required><span class="field-error" data-error-for="project.client"></span></label>
+            <label>Fecha<input id="projectDate" data-path="project.date" type="date" required></label>
+            <label>Acabado exterior<select id="exteriorFinish" data-path="finishes.exterior"></select></label>
+            <label>Acabado interior<select id="interiorFinish" data-path="finishes.interior"></select></label>
           </div>
+          <label>Observaciones para el cliente<textarea id="projectNotes" data-path="project.notes" rows="4" maxlength="320"></textarea></label>
         </div>
+        <div class="step-footer"><span></span><button class="button primary next-step" type="button" data-next="construction">Continuar a medidas</button></div>
+      </section>
 
-        <div class="field-group">
-          <h3>Distribución</h3>
-          <div class="double">
-            <label for="doors">Puertas<select id="doors"><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option></select></label>
-            <label for="drawers">Cajones<select id="drawers"><option>0</option><option>2</option><option selected>3</option><option>4</option><option>6</option></select></label>
+      <section class="step-panel" data-step-panel="construction" aria-labelledby="constructionTitle">
+        <header class="section-heading"><div><span class="step-number">02</span><span class="kicker">Modelo técnico</span><h2 id="constructionTitle">Medidas y construcción</h2></div><p>Todos los valores técnicos se trabajan en milímetros.</p></header>
+        <div class="form-card">
+          <h3>Medidas exteriores</h3>
+          <div class="form-grid three">
+            <label>Ancho exterior <span>mm</span><input id="dimWidth" data-path="dimensions.width" type="number" min="800" max="5000" step="1"><span class="field-error" data-error-for="dimensions.width"></span></label>
+            <label>Alto exterior <span>mm</span><input id="dimHeight" data-path="dimensions.height" type="number" min="1200" max="3200" step="1"><span class="field-error" data-error-for="dimensions.height"></span></label>
+            <label>Fondo exterior <span>mm</span><input id="dimDepth" data-path="dimensions.depth" type="number" min="350" max="1000" step="1"><span class="field-error" data-error-for="dimensions.depth"></span></label>
           </div>
-          <label for="layout">Organización interior<select id="layout"><option value="balanced" selected>Mixta — repisas y colgador</option><option value="hanging">Colgador amplio</option><option value="shelves">Mayormente repisas</option></select></label>
+          <hr>
+          <h3>Parámetros constructivos</h3>
+          <div class="form-grid three">
+            <label>Melamina <span>mm</span><input id="boardThickness" data-path="construction.boardThickness" type="number" min="12" max="30"><span class="field-error" data-error-for="construction.boardThickness"></span></label>
+            <label>Fondo <span>mm</span><input id="backThickness" data-path="construction.backThickness" type="number" min="2" max="12"></label>
+            <label>Altura de zócalo <span>mm</span><input id="plinthHeight" data-path="construction.plinthHeight" type="number" min="0" max="300"><span class="field-error" data-error-for="construction.plinthHeight"></span></label>
+            <label>Retiro de repisas <span>mm</span><input id="shelfSetback" data-path="construction.shelfSetback" type="number" min="0" max="100"></label>
+            <label>Holgura entre puertas <span>mm</span><input id="doorGap" data-path="construction.doorGap" type="number" min="1" max="8"></label>
+            <label>Holgura superior <span>mm</span><input id="doorTopGap" data-path="construction.doorTopGap" type="number" min="1" max="10"></label>
+            <label>Holgura inferior <span>mm</span><input id="doorBottomGap" data-path="construction.doorBottomGap" type="number" min="1" max="10"></label>
+            <label>Cantidad de puertas<select id="doorCount" data-path="doors.count"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select><span class="field-error" data-error-for="doors.count"></span></label>
+          </div>
+          <div class="fixed-rules"><span>Fondo sobrepuesto</span><span>Puertas batientes sobrepuestas</span><span>Tapa y base entre laterales</span><span>Divisiones interiores</span></div>
         </div>
+        <div class="step-footer"><button class="button ghost prev-step" type="button" data-prev="project">Atrás</button><button class="button primary next-step" type="button" data-next="modules">Configurar módulos</button></div>
+      </section>
 
-        <div class="field-group">
-          <h3>Acabado</h3>
-          <div class="swatches" role="radiogroup" aria-label="Acabado del ropero">
-            <button type="button" class="swatch active" role="radio" aria-checked="true" data-color="#c69a68" data-name="Roble natural" style="--swatch:#c69a68" aria-label="Roble natural"></button>
-            <button type="button" class="swatch" role="radio" aria-checked="false" data-color="#efe9df" data-name="Lino claro" style="--swatch:#efe9df" aria-label="Lino claro"></button>
-            <button type="button" class="swatch" role="radio" aria-checked="false" data-color="#6e4935" data-name="Nogal" style="--swatch:#6e4935" aria-label="Nogal"></button>
-            <button type="button" class="swatch" role="radio" aria-checked="false" data-color="#29423b" data-name="Verde bosque" style="--swatch:#29423b" aria-label="Verde bosque"></button>
-            <button type="button" class="swatch" role="radio" aria-checked="false" data-color="#303436" data-name="Grafito" style="--swatch:#303436" aria-label="Grafito"></button>
-          </div>
-          <p class="finish-name" id="finishName">Roble natural</p>
+      <section class="step-panel" data-step-panel="modules" aria-labelledby="modulesTitle">
+        <header class="section-heading"><div><span class="step-number">03</span><span class="kicker">Interior configurable</span><h2 id="modulesTitle">Distribución por módulos</h2></div><p>Define de uno a cuatro espacios interiores. Las puertas son independientes.</p></header>
+        <div class="module-toolbar">
+          <div class="module-metric"><small>DISPONIBLE</small><strong id="moduleAvailable">0 mm</strong></div>
+          <div class="module-metric"><small>UTILIZADO</small><strong id="moduleUsed">0 mm</strong></div>
+          <div class="module-metric"><small>DIFERENCIA</small><strong id="moduleDifference">0 mm</strong></div>
+          <div class="usage-track"><span id="usageBar"></span></div>
+          <button class="button secondary" id="balanceModulesBtn" type="button">Repartir por igual</button>
+          <button class="button primary" id="addModuleBtn" type="button">+ Agregar módulo</button>
         </div>
-        <label for="notes">Notas para el cliente<textarea id="notes" rows="3" maxlength="240" placeholder="Ej.: Interior en melamina blanca, tiradores negros…">Interior en melamina beige y tiradores tipo gola.</textarea></label>
-      </form>
+        <div class="global-error" id="moduleSumError" role="alert"></div>
+        <div class="module-list" id="moduleList"></div>
+        <div class="step-footer"><button class="button ghost prev-step" type="button" data-prev="construction">Atrás</button><button class="button primary next-step" type="button" data-next="presentation">Revisar presentación</button></div>
+      </section>
 
-      <section class="preview-column">
-        <article class="panel preview-card">
-          <div class="preview-head">
-            <div><span class="eyebrow">Vista referencial</span><h2 id="projectPreview">Ropero Principal — Familia Ríos</h2></div>
-            <div class="preview-actions" aria-label="Tipo de vista"><button class="view-toggle active" id="closedViewBtn" type="button" aria-pressed="true">Exterior</button><button class="view-toggle" id="openViewBtn" type="button" aria-pressed="false">Interior</button><button class="view-toggle view-3d-button" id="threeDViewBtn" type="button" aria-pressed="false"><span aria-hidden="true">◇</span> Vista 3D</button></div>
-          </div>
-          <div class="stage">
-            <div class="dimension dimension-width"><span id="widthLabel">240 cm</span></div>
-            <div class="dimension dimension-height"><span id="heightLabel">220 cm</span></div>
-            <div class="wardrobe-wrap">
-              <div class="wardrobe" id="wardrobe" aria-label="Representación referencial del ropero" role="img">
-                <div class="top-shadow"></div>
-                <div class="side-panel" aria-hidden="true"></div>
-                <div class="interior" id="interior"></div>
-                <div class="doors" id="doorsView"></div>
-                <div class="base"></div>
-              </div>
-              <div class="floor-shadow"></div>
+      <section class="step-panel presentation-panel" data-step-panel="presentation" aria-labelledby="presentationTitle">
+        <header class="section-heading"><div><span class="step-number">04</span><span class="kicker">Propuesta visual</span><h2 id="presentationTitle">Presentación</h2></div><p>Las tres vistas representan el mismo modelo configurado.</p></header>
+        <article class="presentation-card">
+          <div class="presentation-meta"><div><span class="kicker">Propuesta para <b id="previewClient"></b></span><h3 id="previewProject"></h3></div><div class="view-tabs" role="tablist"><button class="view-tab active" data-view="exterior" type="button">Exterior</button><button class="view-tab" data-view="interior" type="button">Interior</button><button class="view-tab" data-view="threeD" type="button">3D referencial</button></div></div>
+          <div class="visual-stage" id="visualStage">
+            <div class="general-dimension width-dimension"><span id="widthDimension"></span></div>
+            <div class="general-dimension height-dimension"><span id="heightDimension"></span></div>
+            <div class="model-frame" id="modelFrame">
+              <div class="front-model" id="frontModel"></div>
+              <div class="depth-model" id="depthModel"><div class="depth-top"></div><div class="depth-side"></div></div>
             </div>
+            <div class="module-measures" id="moduleMeasures"></div>
           </div>
-          <p class="reference-note">Representación visual referencial. Los tonos y proporciones pueden variar en el producto final.</p>
+          <div class="proposal-summary"><div><small>MEDIDAS</small><strong id="summaryDimensions"></strong></div><div><small>CONFIGURACIÓN</small><strong id="summaryConfiguration"></strong></div><div><small>ACABADOS</small><strong id="summaryFinishes"></strong></div></div>
+          <div class="door-formula" id="doorFormula"></div>
+          <p class="client-notes" id="previewNotes"></p>
+          <p class="reference-disclaimer">Representación referencial. No sustituye planos de fabricación ni la revisión técnica.</p>
         </article>
+        <div class="confirmation-bar"><div><span class="confirmation-icon">✓</span><div><strong id="confirmationTitle">Lista para confirmar</strong><p id="confirmationText">Revisa la propuesta con tu cliente.</p></div></div><button class="button primary" id="confirmBtn" type="button">Confirmar propuesta</button></div>
+        <div class="step-footer"><button class="button ghost prev-step" type="button" data-prev="modules">Atrás</button><button class="button primary next-step" type="button" data-next="cutlist">Ir al despiece</button></div>
+      </section>
 
-        <div class="summary-grid">
-          <article class="panel summary"><span class="summary-icon">↔</span><div><small>MEDIDAS GENERALES</small><strong id="measureSummary">240 × 220 × 60 cm</strong></div></article>
-          <article class="panel summary"><span class="summary-icon">▥</span><div><small>DISTRIBUCIÓN</small><strong id="distributionSummary">3 puertas · 3 cajones</strong></div></article>
-          <article class="panel summary"><span class="summary-icon color-dot" id="colorDot"></span><div><small>ACABADO</small><strong id="finishSummary">Roble natural</strong></div></article>
+      <section class="step-panel" data-step-panel="cutlist" aria-labelledby="cutlistTitle">
+        <header class="section-heading"><div><span class="step-number">05</span><span class="kicker">Revisión técnica</span><h2 id="cutlistTitle">Despiece preliminar</h2></div><p>Generado desde las mismas medidas, módulos y acabados de la propuesta.</p></header>
+        <div class="cutlist-gate" id="cutlistGate"><div><strong>Confirma una configuración válida</strong><p>El despiece final se habilita después de revisar la propuesta con el cliente.</p></div><button class="button primary" id="goPresentationBtn" type="button">Revisar propuesta</button></div>
+        <div class="cutlist-content" id="cutlistContent" hidden>
+          <div class="warning"><strong>Despiece preliminar.</strong> Verifique medidas, holguras, orientación de veta, canteado, herrajes y sistema de armado antes de cortar material.</div>
+          <div class="cutlist-toolbar"><div><strong id="pieceCount"></strong><span id="cutlistStatus"></span></div><label class="inline-control">Agrupar<select id="groupCutlist"><option value="module">Por módulo</option><option value="none">Sin agrupar</option></select></label><button class="button secondary" id="copyCutlistBtn" type="button">Copiar tabla</button><button class="button primary" id="generateCutlistBtn" type="button">Generar despiece</button></div>
+          <div class="print-technical-summary" id="printTechnicalSummary"></div>
+          <div class="table-wrap"><table><thead><tr><th>Código</th><th>Pieza</th><th>Módulo</th><th>Cant.</th><th>Largo</th><th>Ancho</th><th>Esp.</th><th>Material</th><th>Veta</th><th>Canteado</th><th>Observación</th></tr></thead><tbody id="cutlistBody"></tbody></table></div>
+          <details class="assumptions" open><summary>Supuestos utilizados</summary><ul><li>Laterales completos; tapa y base entre laterales.</li><li>Divisiones entre tapa, base y zócalo.</li><li>Repisas entre laterales o divisiones con el retiro frontal configurado.</li><li>Fondo sobrepuesto y puertas batientes sobrepuestas.</li><li>Los cajones incluyen solo frentes visibles, no cajas ni herrajes.</li></ul></details>
         </div>
-
-        <article class="panel client-sheet">
-          <div><small>PROPUESTA PARA</small><h3 id="clientPreview">María Ríos</h3><p id="notesPreview">Interior en melamina beige y tiradores tipo gola.</p></div>
-          <div class="date"><small>FECHA</small><strong id="datePreview"></strong></div>
-        </article>
+        <div class="step-footer"><button class="button ghost prev-step" type="button" data-prev="presentation">Atrás</button><button class="button primary" id="printCutlistBtn" type="button">Imprimir propuesta y despiece</button></div>
       </section>
     </section>
   </main>
-  <footer><span>Ropero Studio</span><p>Propuestas claras. Decisiones más simples.</p></footer>
-  <script src="app.js"></script>
+
+  <div class="client-mode-banner" id="clientModeBanner" hidden><span>Modo presentación al cliente</span><button class="button primary" id="printClientBtn" type="button">Imprimir propuesta</button><button class="button secondary" id="exitClientModeBtn" type="button">Volver al taller</button></div>
+  <template id="moduleTemplate"><article class="module-card"><header><div><span class="module-index"></span><input class="module-name" maxlength="30" aria-label="Nombre del módulo"></div><button class="icon-button remove-module" type="button" aria-label="Eliminar módulo">×</button></header><div class="module-fields"><label>Ancho <span>mm</span><input class="module-width" type="number" min="100" step="1"><span class="field-error module-width-error"></span></label><label>Tipo<select class="module-type"></select></label><label>Repisas<input class="module-shelves" type="number" min="0" max="10"></label><label>Cajones visibles<input class="module-drawers" type="number" min="0" max="6"></label></div><p class="module-hint"></p></article></template>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
+
