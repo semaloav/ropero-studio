@@ -8,6 +8,7 @@ const ui = {
   savedState: document.getElementById("savedState"),
   closedView: document.getElementById("closedViewBtn"),
   openView: document.getElementById("openViewBtn"),
+  threeDView: document.getElementById("threeDViewBtn"),
 };
 const DEFAULT_FINISH = { color: "#c69a68", name: "Roble natural" };
 let finish = { ...DEFAULT_FINISH };
@@ -121,18 +122,22 @@ function selectFinish(button) {
   render();
 }
 
-function setView(showInterior) {
+function setView(mode) {
+  const showInterior = mode === "interior";
+  const showThreeD = mode === "3d";
   ui.wardrobe.classList.toggle("interior-view", showInterior);
-  ui.openView.classList.toggle("active", showInterior);
-  ui.closedView.classList.toggle("active", !showInterior);
-  ui.openView.setAttribute("aria-pressed", String(showInterior));
-  ui.closedView.setAttribute("aria-pressed", String(!showInterior));
+  ui.wardrobe.classList.toggle("three-d-view", showThreeD);
+  [[ui.closedView, mode === "exterior"], [ui.openView, showInterior], [ui.threeDView, showThreeD]].forEach(([button, selected]) => {
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
 }
 
 FIELD_IDS.forEach((id) => fields[id].addEventListener("input", render));
 document.querySelectorAll(".swatch").forEach((button) => button.addEventListener("click", () => selectFinish(button)));
-ui.closedView.addEventListener("click", () => setView(false));
-ui.openView.addEventListener("click", () => setView(true));
+ui.closedView.addEventListener("click", () => setView("exterior"));
+ui.openView.addEventListener("click", () => setView("interior"));
+ui.threeDView.addEventListener("click", () => setView("3d"));
 document.getElementById("printBtn").addEventListener("click", () => {
   if (document.getElementById("configForm").reportValidity()) window.print();
 });
